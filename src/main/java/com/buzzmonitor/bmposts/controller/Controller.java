@@ -32,7 +32,7 @@ public class Controller {
         return "Welcome!";
     }
 	
-	@PostMapping("/post")
+	@PostMapping("/posts")
 	public void addPost(@RequestBody Post post){
 		repository.save(post);
 	}
