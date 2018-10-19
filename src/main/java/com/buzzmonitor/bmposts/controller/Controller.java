@@ -3,6 +3,8 @@ package com.buzzmonitor.bmposts.controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,9 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.buzzmonitor.bmposts.model.Post;
 import com.buzzmonitor.bmposts.repository.Repository;
-;
-
-
 
 @RestController
 public class Controller {
@@ -32,9 +31,9 @@ public class Controller {
         return "Welcome!";
     }
 	
-	@PostMapping("/post")
-	public void addPost(@RequestBody Post post){
-		repository.save(post);
+	@PostMapping("/posts")
+	public Post addPost(@RequestBody Post post){
+		return repository.save(post);
 	}
 	
 	@DeleteMapping("/posts/{post_id}")
@@ -52,16 +51,34 @@ public class Controller {
 		 return posts;
 	}
 		
-	@GetMapping(value = "/posts/{author}")
+	@GetMapping(value = "/posts/author/{author}")
 	public List<Post> findByAuthorName(@PathVariable String author, @PageableDefault
-			(size = Integer.MAX_VALUE, sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable) {
+			(value = Integer.MAX_VALUE, sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return repository.findByAuthorName(author,pageable);
     }
 	
-	@GetMapping(value = "/posts/{author}/{origin}")
+	@GetMapping(value = "/posts/author/{author}/{origin}")
 	public List<Post> findByAuthorName(@PathVariable String author ,@PathVariable String origin, @PageableDefault
-			(size = Integer.MAX_VALUE, sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable) {
+			(value = Integer.MAX_VALUE, sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return repository.findByAuthorNameAndOrigin(author, origin ,pageable);
+    }
+	
+	@GetMapping(value = "/posts/origin/{origin}")
+	public List<Post> findByOrigin(@PathVariable String origin, @PageableDefault
+			(value = Integer.MAX_VALUE, sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        return repository.findByOrigin(origin ,pageable);
+    }
+	
+	
+	@GetMapping(value = "/posts/content/{content}")
+	public List<Post> findByContent(@PathVariable String content, @PageableDefault
+			(value = Integer.MAX_VALUE, sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        return repository.findByContent(content,pageable);
+    }
+	
+	@GetMapping(value = "/posts/id/{post_id}")
+	public Optional<Post> findById(@PathVariable String post_id) {
+        return repository.findById(post_id);
     }
 	
 }

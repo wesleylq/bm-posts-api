@@ -14,6 +14,10 @@ public interface Repository extends ElasticsearchRepository<Post, String>{
 	
 	public List<Post> findByAuthorName(String author, Pageable pageable);
 
-	public List<Post> findByAuthorNameAndOrigin(String author, String origin, Pageable pageable);
+	public List<Post> findByAuthorNameAndOrigin(String author, String origin, Pageable pageable);	
+
+	public List<Post> findByContent(String content, Pageable pageable);
+
+	public List<Post> findByOrigin(String origin, Pageable pageable);
 
 }
